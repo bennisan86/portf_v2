@@ -1,13 +1,396 @@
+@import url('https://fonts.googleapis.com/css?family=Karla:400,700&display=swap');
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: 'Karla', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  box-sizing: border-box;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+
+/*
+///
+HomePage stuff
+///
+*/
+
+.main_container {
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  position: absolute;
+  /* background: red; */
+}
+
+.top_container {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+  padding: 80px 10vw 20px 10vw;
+}
+
+.top_logo {
+  width: 100px;
+}
+
+.top_txt {
+  width: 100%;
+  font-weight: bold;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+.top_txt p {
+  font-weight: bold;
+  font-size: 2.25em;
+  max-width: 100%;
+  margin: 35px 0 10px 0;
+}
+
+.top_txt small {
+  font-weight: bold;
+  font-size: 1em;
+}
+
+.top_txt a {
+  color: black;
+}
+
+.sociallinks {
+  display: flex;
+  flex-direction: row;
+  box-sizing: border-box;
+  width: 100%;
+  margin-top: 30px;
+}
+
+.sociallink {
+  width: 24px;
+  margin-right: 12px;
+}
+
+.sociallinks a {
+  text-decoration: none;
+}
+
+.project_container {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0px 20px 50px 20px;
+  margin-top: 50px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.project_container_loading {
+  box-sizing: border-box;
+  padding: 0px 10vw 20px 10vw;
+  color: grey;
+}
+
+.project_tile {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+.project_tile {
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+  margin-right: 0px;
+}
+
+.project_tile a {
+  width: 100%;
+  height: 0px;
+  font-size: 0px;
+  line-height: 0px;
+}
+.project_tile img {
+  width: 100%;
+}
+
+.footer_container {
+  background-color: black;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding: 70px 10vw 70px 10vw;
+  color:white;
+}
+
+.footer_logo {
+  width: 50px;
+  margin-bottom: 30px;
+}
+
+
+.footer_txt {
+  width: 100%;
+}
+.footer_txt p {
+  margin: 0px;
+}
+
+.footer_txt a {
+  color: white;
+}
+
+.footer_closer {
+  background-color: black;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 10px 0 70px 0;
+  border-top: 1px white dotted;
+  color: white;
+}
+
+
+/* 
+///
+DetailPage stuff
+///
+ */
+.detail_container {
+  position: absolute;
+
+}
+
+.detailtop_container {
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding: 70px 10vw 20px 10vw;
+}
+
+.backarrow {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  height: 30px;
+}
+
+.backarrow img {
+  width: 76px;
+  height: 10px;
+}
+
+.detailtop_txt {
+  width: 100%;
+  font-weight: bold;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  margin: 0;
+}
+
+.detailtop_txt p {
+  font-weight: normal;
+  font-size: 1.25em;
+  line-height: 1.4em;
+  max-width: 100%;
+  margin: 0;
+}
+
+p.detailtop_title {
+  font-weight: bold;
+  margin: 40px 0 0 0;
+}
+p.detailtop_body {
+  margin: 10px 0 16px 0;
+}
+
+small.detailtop_time,small.detailtop_labels,a.detailtop_link {
+  font-weight: bold;
+  font-size: 1em;
+  line-height: 1.3em;
+}
+
+a.detailtop_link {
+  line-height: 1.5em;
+}
+
+.detailtop_labels {
+  margin:0 0 16px 0;
+}
+
+.detailtop_txt a {
+  color: black;
+}
+
+.detailimgs {
+  width: 100vw;
+  box-sizing: border-box;
+  display: flex;
+  flex-flow: row wrap;
+  margin-top: 8vh;
+  padding: 0 3vw 30px 3vw;
+}
+
+.detailimgs img:nth-child(1),.detailimgs img:nth-child(4),.detailimgs img:nth-child(5),.detailimgs img:nth-child(8),.detailimgs img:nth-child(9) {
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 3vw;
+}
+.detailimgs img:nth-child(2),.detailimgs img:nth-child(3),.detailimgs img:nth-child(6),.detailimgs img:nth-child(7) {
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 3vw;
+}
+
+
+.absolute {
+  position: absolute;
+  /* width: 100%; */
+}
+
+
+
+
+
+
+/* simple - enter transition 300ms, exit 150ms */
+/* .fade-appear,
+.fade-enter {
+    opacity: 0;
+    z-index: 1;
+}
+.fade-appear-active,
+.fade-enter.fade-enter-active {
+    opacity: 1;
+    transition: opacity 300ms linear 150ms;
+}
+
+.fade-exit {
+    opacity: 1;
+}
+
+.fade-exit.fade-exit-active {
+    opacity: 0;
+    transition: opacity 150ms linear;
+}
+
+ */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@media only screen and (max-width: 500px) {
+}
+
+@media only screen and (min-width: 700px) and (max-width: 1500px) {
+
+
+  .top_container {
+    padding: 110px 10vw 20px 10vw;
+  }
+
+  .top_txt p {
+    max-width: 730px;
+  }
+
+  .project_container {
+    padding: 0px 10vw 70px 10vw;
+  }
+
+  .project_tile {
+    max-width: 25vw;
+    margin-right: 12px;
+  }
+
+  p.detailtop_body {
+    margin: 10px 0 40px 0;
+  }
+
+  .detailtop_labels {
+    margin:0 0 30px 0;
+  }
+  
+
+  
+  .detailtop_txt {
+    max-width: 860px;
+  }
+
+
+
+  .detailimgs {
+    width: 100vw;
+    box-sizing: border-box;
+    display: flex;
+    flex-flow: row wrap;
+    margin-top: 8vh;
+    padding: 0 10vw 80px 10vw;
+    max-width: calc(10vw+1050px);
+  }
+
+ .detailimgs img:nth-child(1),.detailimgs img:nth-child(4),.detailimgs img:nth-child(5),.detailimgs img:nth-child(8),.detailimgs img:nth-child(9) {
+    width: 50.5vw;
+    max-width: 672px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+  }
+  .detailimgs img:nth-child(2),.detailimgs img:nth-child(3),.detailimgs img:nth-child(6),.detailimgs img:nth-child(7) {
+    width: 24vw;
+    max-width: 332px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+  }
+
+
+}
+
+
+
+@media only screen and (min-width: 1500px) {
+
+
+  .detailimgs {
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-flow: row wrap;
+    margin-top: 8vh;
+    padding: 0 10vw; /* Adjustment for the gutter */
+    max-width: calc(10vw+1050px);
+  }
+
+  .detailimgs img:nth-child(1),.detailimgs img:nth-child(4) {
+    width: 50.5vw;
+    max-width: 900px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+  }
+  .detailimgs img:nth-child(2),.detailimgs img:nth-child(3) {
+    width: 24vw;
+    max-width: 448px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+  }
+
+
+
 }

@@ -20,8 +20,11 @@ class App extends Component {
           projects: [],
           projectcovers: [],
           loading: true,
+          currentProject: 0,
+          selProject: {},
         };
-    }
+        this.toDetail = this.toDetail.bind(this);
+      }
 
 
 
@@ -43,12 +46,11 @@ class App extends Component {
             // ! Creating array of promises (that incl other attr from ProjectsObject)
             return new Promise((resolve, reject) => {
               this.props.firebase.covers().child(ProjectsObject[key].name+'.png').getDownloadURL()
-                    .then((dl) => {
-                        resolve(dl)
-                    })
+                  .then((dl) => {
+                      resolve(dl)
+                  })
               })
-        })
-
+          })
 
           // ! When these resolve: set projects in state
           Promise.all(projectsCoverlist).then((allprojects) => {
@@ -57,7 +59,6 @@ class App extends Component {
                   loading: false
               });
             })
-
         });
   }
 
@@ -75,14 +76,24 @@ class App extends Component {
         default:
     }
   }
+
+
+  
+  toDetail(projectindex){
+    const project = this.state.projects[projectindex];
+    this.setState({
+      currentProject: projectindex,
+      selProject: project,
+    });
+    this.props.history.push('/detail');
+  }
   
   render(){
-    console.log("state projectcovers:",this.state.projectcovers,"state projects:",this.state.projects);
     const { location } = this.props;
     const currentKey = location.pathname.split("/")[1] || "/";
     const timeout= { enter: 450, exit: 300};
     this.getAnimDirection(location);
-    const directionCalc = this.getAnimDirection(location);;
+    const directionCalc = this.getAnimDirection(location);
     return (
         <TransitionGroup component="div" className="App">
             <CSSTransition
@@ -94,9 +105,9 @@ class App extends Component {
             >
             <div className={directionCalc}>
               <Switch location={location}>
-                <Route exact path="/" component={Home} />
+                <Route exact path="/" render={(props) => <Home {...props} covers={this.state.projectcovers} logit={this.toDetail}/>} />
                 <Route exact path="/about" component={About} />
-                <Route exact path="/detail" component={Detail} />
+                <Route exact path="/detail" render={(props) => <Detail {...props} project={this.state.selProject} />} />
               </Switch>
             </div>
           </CSSTransition>

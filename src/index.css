@@ -17,11 +17,11 @@ HomePage stuff
 
 .main_container {
   width: 100vw;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
   position: absolute;
-  /* background: red; */
 }
 
 .top_container {
@@ -261,38 +261,6 @@ a.detailtop_link {
 
 
 
-/* simple - enter transition 300ms, exit 150ms */
-/* .fade-appear,
-.fade-enter {
-    opacity: 0;
-    z-index: 1;
-}
-.fade-appear-active,
-.fade-enter.fade-enter-active {
-    opacity: 1;
-    transition: opacity 300ms linear 150ms;
-}
-
-.fade-exit {
-    opacity: 1;
-}
-
-.fade-exit.fade-exit-active {
-    opacity: 0;
-    transition: opacity 150ms linear;
-}
-
- */
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -394,3 +362,65 @@ a.detailtop_link {
 
 
 }
+
+
+
+
+/*
+///
+Animation stuff
+///
+*/
+
+.pageSlider-appear.to-home,
+.pageSlider-enter.to-home {
+    opacity: 0;
+    transform: translate(100px, 0);
+    z-index: 1;
+}
+.pageSlider-appear-active.to-home,
+.pageSlider-enter.pageSlider-enter-active.to-home {
+  opacity: 1;
+  transform: translate(0px, 0);
+  transition: all 300ms linear 150ms;
+}
+
+.pageSlider-exit.to-home {
+  opacity: 1;
+  transform: translate(0px, 0);
+}
+
+.pageSlider-exit.pageSlider-exit-active.to-home {
+    opacity: 0;
+    transform: translate(100px, 0);
+    transition: all 150ms linear;
+}
+
+
+
+
+.pageSlider-appear.home-away,
+.pageSlider-enter.home-away {
+    opacity: 0;
+    transform: translate(-100px, 0);
+    z-index: 1;
+}
+.pageSlider-appear-active.home-away,
+.pageSlider-enter.pageSlider-enter-active.home-away {
+  opacity: 1;
+  transform: translate(0px, 0);
+  transition: all 300ms linear 150ms;
+}
+
+.pageSlider-exit.home-away {
+  opacity: 1;
+  transform: translate(0px, 0);
+}
+
+.pageSlider-exit.pageSlider-exit-active.home-away {
+    opacity: 0;
+    transform: translate(-100px, 0);
+    transition: all 150ms linear;
+}
+
+

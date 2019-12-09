@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import './App.css';
+import { withFirebase } from './components/Firebase';
 
 import { Switch, Route, withRouter } from 'react-router-dom';
 
 import Home from './components/Homepage';
 import About from './components/Aboutpage';
-// import Detail from './components/Aboutpage';
+import Detail from './components/Detailpage';
 
 
 import {
@@ -14,22 +14,51 @@ import {
 } from 'react-transition-group';
 
 class App extends Component {
-  constructor(props) {
-      super(props);
-      this.state = {
-        prevDepth: this.getPathDepth(this.props.location),
-      };
-  }
+    constructor(props) {
+        super(props);
+        this.state = {
+          projects: [],
+          projectcovers: [],
+          loading: true,
+        };
+    }
 
-  componentWillReceiveProps(){
-    this.setState({ prevDepth: this.getPathDepth(this.props.location)});
-    // console.log("this.props.location",this.props.location.pathname, "depth",this.getPathDepth(this.props.location));
-  }
 
-  getPathDepth(location) {
-    let pathArr = location.pathname.split("/");
-    pathArr = pathArr.filter(n => n !== "");
-    return pathArr.length;
+
+    componentDidMount() {
+      // ! Creating snapshot of database > object
+      this.props.firebase.projects().on('value', snapshot => {
+          const ProjectsObject = snapshot.val();
+          // ! Object > Array (w uid's)
+          const projectsList = Object.keys(ProjectsObject).map((key) => {
+            return(
+            {...ProjectsObject[key],
+              uid: key})
+          });
+          this.setState({
+            projects: projectsList,
+        });
+
+          const projectsCoverlist = Object.keys(ProjectsObject).map((key) => {
+            // ! Creating array of promises (that incl other attr from ProjectsObject)
+            return new Promise((resolve, reject) => {
+              this.props.firebase.covers().child(ProjectsObject[key].name+'.png').getDownloadURL()
+                    .then((dl) => {
+                        resolve(dl)
+                    })
+              })
+        })
+
+
+          // ! When these resolve: set projects in state
+          Promise.all(projectsCoverlist).then((allprojects) => {
+              this.setState({
+                  projectcovers: allprojects,
+                  loading: false
+              });
+            })
+
+        });
   }
 
   getAnimDirection(location){
@@ -37,7 +66,7 @@ class App extends Component {
       case '/':
         return 'home-away'
         // break;
-      case '/here':
+      case '/detail':
           return 'to-home'
         // break;
       case '/about':
@@ -48,25 +77,26 @@ class App extends Component {
   }
   
   render(){
-
+    console.log("state projectcovers:",this.state.projectcovers,"state projects:",this.state.projects);
     const { location } = this.props;
     const currentKey = location.pathname.split("/")[1] || "/";
     const timeout= { enter: 450, exit: 300};
     this.getAnimDirection(location);
+    const directionCalc = this.getAnimDirection(location);;
     return (
         <TransitionGroup component="div" className="App">
             <CSSTransition
               key={currentKey}
               timeout={timeout}
               classNames="pageSlider"
-              // mountOnEnter={false}
-              // unmountOnExit={true}
+              mountOnEnter={false}
+              unmountOnExit={true}
             >
-            <div className={this.getPathDepth(location) - this.state.prevDepth >= 0 ? "to-home" : "home-away"}>
+            <div className={directionCalc}>
               <Switch location={location}>
                 <Route exact path="/" component={Home} />
                 <Route exact path="/about" component={About} />
-                <Route exact path="/here" component={About} />
+                <Route exact path="/detail" component={Detail} />
               </Switch>
             </div>
           </CSSTransition>
@@ -76,4 +106,4 @@ class App extends Component {
   }
 }
 
-export default withRouter(App);
+export default withFirebase(withRouter(App));

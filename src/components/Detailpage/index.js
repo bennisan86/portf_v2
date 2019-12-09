@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 import * as ROUTES from '../../constants/routes';
 
 
-class About extends Component {
+class Detail extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -80,6 +80,8 @@ class About extends Component {
             descr: 'lorem ipsum discriptum dolor',
             time: '2002',
         };
+        const labels = this.state.labels;
+        const links = ["link1","link1","link1","link1"];
 
         return (
             <div className="detail_container">
@@ -92,13 +94,27 @@ class About extends Component {
                     </Link>
                 </div>
                 <div className="detailtop_txt">
-                    <p className="detailtop_title">About me</p>
+                    <p className="detailtop_title">{project.title}</p>
+                    <p className="detailtop_body">{project.descr}</p>
+                    <small className="detailtop_time">{project.time}</small>
+                    <small className="detailtop_labels">{labels}</small>
+                    {links.map(link => {
+                        return(<a className="detailtop_link" href={link.val} key={link.index} target="blank">{link.val}</a>)
+                    })}
                 </div>
                 </div>
+
+                {/* <div className="detailimgs">
+                    {imgs.map((img,key) => {
+                        return(<img src={img} key={key} alt='' />)
+                    })}
+                </div>
+                <Footer /> */}
             </div>
         );
     }
 }
 
+// export default withFirebase(Detail);
 
-export default About;
+export default Detail;

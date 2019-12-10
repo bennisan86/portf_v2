@@ -12,12 +12,13 @@ import * as ROUTES from '../../constants/routes';
 
 const Home = (props) => {
     const covers = props.covers;
-    return(
-        <div className="main_container">
+    const loading = props.loading;
+    return( 
+        <div className="main_container" >
             <div className="top_container">
-                <div className="top_logo"><img src={logo} alt="Logo" /></div>
+                <div className="top_logo"><Link to={ROUTES.ABOUT}><img src={logo} alt="Logo" /></Link></div>
                 <div className="top_txt">
-                    <p>I’m <Link to={ROUTES.ABOUT}>Bennisan</Link>, digital designer, focused on interfacing and <Link to={ROUTES.DETAIL}>branding</Link></p>
+                    <p>I’m <Link to={ROUTES.ABOUT}>Bennisan</Link>, digital designer, focused on interfacing and branding</p>
                     <small>(and aspiring <a href="https://www.instagram.com/__bennisan__/" target="blank">graphic novelist</a>).</small>
                 </div>
                 <div className="sociallinks">
@@ -26,14 +27,17 @@ const Home = (props) => {
                     <div className="sociallink"><a href="https://twitter.com/ben_adriaenssen" target="blank"><img src={twitter} alt="Logo" /></a></div>
                 </div>
             </div>
-            <div className="project_container">
-                {covers.map((cover,index) => (
-                    <div className="project_tile" key={index} onClick={() => props.logit(index)}>
-                        <img src={cover} alt='' />
-                    </div>
-                ))}
-            </div>
-            <Footer />
+            {loading ? <div className="project_container_loading"><p>Loading projects...</p></div> :
+            <>
+                <div className="project_container">
+                    {covers.map((cover,index) => (
+                        <div className="project_tile" key={index} onClick={() => props.toDetail(index)}>
+                            <img src={cover} alt='' />
+                        </div>
+                    ))}
+                </div>
+                <Footer />
+            </>}
         </div>
     )
 }

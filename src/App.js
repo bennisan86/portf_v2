@@ -21,9 +21,21 @@ class App extends Component {
           projectcovers: [],
           loading: true,
           currentProject: 0,
-          selProject: {},
+          selProject: {
+            "descr" : "",
+            "labels" : {
+              "label1" : "",
+            },
+            "links" : {
+              "link1" : ""
+            },
+            "name" : "",
+            "time" : "",
+            "title" : "Select a project in home"
+          },
         };
         this.toDetail = this.toDetail.bind(this);
+        this.toNext = this.toNext.bind(this);
       }
 
 
@@ -56,11 +68,19 @@ class App extends Component {
           Promise.all(projectsCoverlist).then((allprojects) => {
               this.setState({
                   projectcovers: allprojects,
-                  loading: false
               });
-            })
-        });
-  }
+              setTimeout(
+                function() {
+                    this.setState({loading: false});
+                }
+                .bind(this),
+                300
+            );
+          })
+      });
+    }
+
+
 
   getAnimDirection(location){
     switch(location.pathname) {
@@ -85,7 +105,21 @@ class App extends Component {
       currentProject: projectindex,
       selProject: project,
     });
+    console.log("height",document.body.scrollHeight);
     this.props.history.push('/detail');
+  }
+
+  toNext(){
+    const current = this.state.currentProject+1;
+    const nextproject = this.state.projects[current];
+    this.setState({
+      currentProject: current,
+      selProject: nextproject,
+    });
+    this.props.history.push('/detail');
+    console.log(nextproject);
+
+    // window.location.reload();
   }
   
   render(){
@@ -94,6 +128,7 @@ class App extends Component {
     const timeout= { enter: 450, exit: 300};
     this.getAnimDirection(location);
     const directionCalc = this.getAnimDirection(location);
+    const selProject = this.state.selProject;
     return (
         <TransitionGroup component="div" className="App">
             <CSSTransition
@@ -105,9 +140,9 @@ class App extends Component {
             >
             <div className={directionCalc}>
               <Switch location={location}>
-                <Route exact path="/" render={(props) => <Home {...props} covers={this.state.projectcovers} logit={this.toDetail}/>} />
+                <Route exact path="/" render={(props) => <Home {...props} covers={this.state.projectcovers} loading={this.state.loading} toDetail={this.toDetail}/>} />
                 <Route exact path="/about" component={About} />
-                <Route exact path="/detail" render={(props) => <Detail {...props} project={this.state.selProject} />} />
+                <Route exact path="/detail" render={(props) => <Detail {...props} project={selProject} toNext={this.toNext}/>} />
               </Switch>
             </div>
           </CSSTransition>

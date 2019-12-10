@@ -3,12 +3,16 @@ import logo from '../../svg/logo_white.svg';
 import github from '../../svg/github_white.svg';
 import twitter from '../../svg/twitter_white.svg';
 
+import * as ROUTES from '../../constants/routes';
+import { Link } from 'react-router-dom';
+
+
 const Footer = () => {
     return (
     <>
         <div className="footer_container">
             <div className="footer_logo">
-                <img src={logo} alt="Bennisan logo small"></img>
+               <Link to={ROUTES.ABOUT}><img src={logo} alt="Bennisan logo small"></img></Link>
             </div>
             <div className="footer_txt">
                 <p>+32 485 51 41 55</p>
@@ -20,7 +24,7 @@ const Footer = () => {
             </div>
         </div>
         <div className="footer_closer">
-            <p>	&#9400; 2019</p>
+            <p>	&#9400; 2019 — <a href="https://github.com/bennisan86/portf_v2" target="blank">Designed &amp; developed</a> by myself</p>
         </div>
     </>
     )

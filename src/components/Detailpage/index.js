@@ -15,12 +15,19 @@ class Detail extends Component {
             selProject: this.props.project,
             labels: '',
             links: [],
-            imgs: []
+            imgs: [],
+            loadingimgs: true,
+            showfooter: false
         };
     }
     componentDidMount(){
-        // window.scrollTo(0, 0);
-        if (this.state.selProject){
+        //Timeout for scrolling to top after animatiob
+        setTimeout(
+            function() {
+                window.scrollTo(0, 0);
+            },
+            300
+        );
             //! getting & transforming labels to string
             const labelsObject = this.state.selProject.labels;
             const labels = Object.keys(labelsObject).map((val) => {
@@ -42,38 +49,67 @@ class Detail extends Component {
                 links: links,
             });
 
-            //! probeersel om imgs te renderen
-            new Promise((resolve, reject) => {
-                this.props.firebase.varref(this.state.selProject.name+'/').listAll()
-                .then((res) => {
-                    const imgarray = res.items.map((item) => {
-                        // return(item.name)
-                        return new Promise((resolve, reject) => {
-                            this.props.firebase.varref(this.state.selProject.name+'/').child(item.name).getDownloadURL()
-                            .then((imgurl) => {
-                                resolve(imgurl)
-                            })
-                        })
-                    }) 
-                    Promise.all(imgarray).then((allimgs) => {
-                        this.setState({
-                            imgs: allimgs
-                        });
-                    })
-                })
-            });
-
-
-        } else {
-            console.log("Nope.");
-        }
+            //! Render imgs 
+            this.renderImg(this.state.selProject);
     }
+
+    renderImg(selProject){
+        new Promise((resolve, reject) => {
+            this.props.firebase.varref(selProject.name+'/').listAll()
+            .then((res) => {
+                const imgarray = res.items.map((item) => {
+                    // return(item.name)
+                    return new Promise((resolve, reject) => {
+                        this.props.firebase.varref(selProject.name+'/').child(item.name).getDownloadURL()
+                        .then((imgurl) => {
+                            resolve(imgurl)
+                        })
+                    })
+                }) 
+                Promise.all(imgarray).then((allimgs) => {
+                    this.setState({
+                        imgs: allimgs,
+                    });
+                    setTimeout(
+                        function() {
+                            this.setState({loadingimgs: false});
+                        }
+                        .bind(this),
+                        300
+                    );
+                    setTimeout(
+                        function() {
+                            console.log("showFooter");
+                            this.setState({showfooter: true});
+                        }
+                        .bind(this),
+                        600
+                    );
+                })
+            })
+        });
+    }
+
+
+    static getDerivedStateFromProps(props, state) {
+        if (props.project !== state.selProject) {
+              return {
+            selProject: props.project,
+          };
+        }
+        // Return null to indicate no change to state.
+        return null;
+      }
+
+
     render(){
         const project = this.state.selProject;
         const labels = this.state.labels;
         const links = this.state.links;
         const imgs = this.state.imgs;
-        console.log("in detail=",this.state.selProject);
+        const loadingimgs = this.state.loadingimgs;
+        const showfooter = this.state.showfooter;
+
         return (
             <div className="detail_container">
             <div className="detailtop_container">
@@ -94,13 +130,15 @@ class Detail extends Component {
                     })}
                 </div>
                 </div>
-
-                <div className="detailimgs">
-                    {imgs.map((img,key) => {
-                        return(<img src={img} key={key} alt='' />)
-                    })}
-                </div>
-                <Footer />
+                {loadingimgs ? <div className="project_container_loading"><p>Loading images...</p></div> :
+                <>
+                    <div className="detailimgs">
+                        {imgs.map((img,key) => {
+                            return(<img src={img} key={key} alt='' />)
+                        })}
+                    </div>
+                    {showfooter ? <Footer /> : null}
+                </>}
             </div>
         );
     }

@@ -21,13 +21,13 @@ class Detail extends Component {
         };
     }
     componentDidMount(){
-        //Timeout for scrolling to top after animatiob
-        setTimeout(
-            function() {
-                window.scrollTo(0, 0);
-            },
-            300
-        );
+            //Timeout for scrolling to top after animation
+            setTimeout(
+                function() {
+                    window.scrollTo(0, 0);
+                },
+                300
+            );
             //! getting & transforming labels to string
             const labelsObject = this.state.selProject.labels;
             const labels = Object.keys(labelsObject).map((val) => {
@@ -112,14 +112,12 @@ class Detail extends Component {
 
         return (
             <div className="detail_container">
+            <div className="backarrow">
+                <Link to={ROUTES.HOME}>
+                    <img src={backarrow} alt='Arrow to left, as back button' />
+                </Link>
+            </div>
             <div className="detailtop_container">
-                <div className="backarrow">
-                    <Link to={ROUTES.HOME}>
-                    <div className="backarrow">
-                        <img src={backarrow} alt='Arrow to left, as back button' />
-                    </div>
-                    </Link>
-                </div>
                 <div className="detailtop_txt">
                     <p className="detailtop_title">{project.title}</p>
                     <p className="detailtop_body">{project.descr}</p>

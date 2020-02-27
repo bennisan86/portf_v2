@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Footer from '../../components/Footer';
 
@@ -7,12 +7,31 @@ import mail from '../../svg/mail.svg';
 import twitter from '../../svg/twitter.svg';
 import github from '../../svg/github.svg';
 
+import { useScrollPosition } from '@n8tb1t/use-scroll-position'
+
+
 import * as ROUTES from '../../constants/routes';
 
 
-const Home = (props) => {
-    const covers = props.covers;
-    const loading = props.loading;
+class Home extends Component {
+
+
+
+    componentDidMount(){
+        //Timeout for scrolling to top after animatiob
+        useScrollPosition(({ prevPos, currPos }) => {
+            console.log("currPos",currPos.x)
+            console.log("currPos",currPos.y)
+            console.log("prevPos",prevPos.x)
+            console.log("prevPos",prevPos.y)
+        });
+    }
+
+    // window.scrollTo(0, 0);
+
+    render(){
+    const covers = this.props.covers;
+    const loading = this.props.loading;
     return( 
         <div className="main_container" >
             <div className="top_container">
@@ -31,7 +50,7 @@ const Home = (props) => {
             <>
                 <div className="project_container">
                     {covers.map((cover,index) => (
-                        <div className="project_tile" key={index} onClick={() => props.toDetail(index)}>
+                        <div className="project_tile" key={index} onClick={() => this.props.toDetail(index)}>
                             <img src={cover} alt='' />
                         </div>
                     ))}
@@ -39,7 +58,8 @@ const Home = (props) => {
                 <Footer />
             </>}
         </div>
-    )
+    );
+    }
 }
 
 export default Home;

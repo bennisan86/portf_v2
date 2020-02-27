@@ -28,14 +28,12 @@ class About extends Component {
 
         return (
             <div className="detail_container">
-                <div className="detailtop_container">
                     <div className="backarrow">
                         <Link to={ROUTES.HOME}>
-                        <div className="backarrow">
                             <img src={backarrow} alt='Arrow to left, as back button' />
-                        </div>
                         </Link>
                     </div>
+                    <div className="detailtop_container">
                     <img className="avatar_img" src={benadriaenssen} alt="Ben Adriaenssen profile"/>
                     <div className="detailtop_txt">
                         <p className="detailtop_title">About me</p>

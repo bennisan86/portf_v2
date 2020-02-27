@@ -101,11 +101,12 @@ class App extends Component {
   
   toDetail(projectindex){
     const project = this.state.projects[projectindex];
+    const prevPos = projectindex.prevPos;
+    console.log("HIIIEEROOOO",prevPos);
     this.setState({
       currentProject: projectindex,
       selProject: project,
     });
-    console.log("height",document.body.scrollHeight);
     this.props.history.push('/detail');
   }
 
@@ -125,7 +126,7 @@ class App extends Component {
   render(){
     const { location } = this.props;
     const currentKey = location.pathname.split("/")[1] || "/";
-    const timeout= { enter: 450, exit: 300};
+    const timeout= { enter: 360, exit: 240};
     this.getAnimDirection(location);
     const directionCalc = this.getAnimDirection(location);
     const selProject = this.state.selProject;

@@ -7,9 +7,6 @@ import mail from '../../svg/mail.svg';
 import twitter from '../../svg/twitter.svg';
 import github from '../../svg/github.svg';
 
-import { useScrollPosition } from '@n8tb1t/use-scroll-position'
-
-
 import * as ROUTES from '../../constants/routes';
 
 
@@ -19,14 +16,7 @@ class Home extends Component {
 
     componentDidMount(){
         //Timeout for scrolling to top after animatiob
-        useScrollPosition(({ prevPos, currPos }) => {
-            console.log("currPos",currPos.x)
-            console.log("currPos",currPos.y)
-            console.log("prevPos",prevPos.x)
-            console.log("prevPos",prevPos.y)
-        });
     }
-
     // window.scrollTo(0, 0);
 
     render(){

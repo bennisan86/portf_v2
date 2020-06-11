@@ -7,6 +7,7 @@ import Home from './components/Homepage';
 import About from './components/Aboutpage';
 import Detail from './components/Detailpage';
 
+import swarmcitycover from './covers/swarmcity.png';
 
 import {
   CSSTransition,
@@ -17,9 +18,43 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-          projects: [],
-          projectcovers: [],
-          loading: true,
+          projects: [
+            {
+              name : "swarmcity",
+              images: {},
+              descr_NL: "nl blabla",
+              descr_ENG: "ENG blabla",
+              labels : [
+                "Branding",
+                "UX/UI",
+                "internal & external communication",
+                "Front-end development"
+              ],
+              links: [
+                "link1"
+              ],
+              time : "2016-2018",
+              title : "Swarm City"
+            },
+            {
+              name : "meneersorteer",
+              images: {},
+              descr_NL: "nl blabla meneersorteer",
+              descr_ENG: "ENG blabla meneersorteer",
+              labels : [
+                "Branding",
+                "UX/UI",
+                "internal & external communication",
+                "Front-end development"
+              ],
+              links: [
+                "link1"
+              ],
+              time : "2016-2018",
+              title : "Meneer Sorteer"
+            }
+          ],
+          loading: false,
           currentProject: 0,
           selProject: {
             "descr" : "",
@@ -41,43 +76,45 @@ class App extends Component {
 
 
     componentDidMount() {
-      // ! Creating snapshot of database > object
-      this.props.firebase.projects().on('value', snapshot => {
-          const ProjectsObject = snapshot.val();
-          // ! Object > Array (w uid's)
-          const projectsList = Object.keys(ProjectsObject).map((key) => {
-            return(
-            {...ProjectsObject[key],
-              uid: key})
-          });
-          this.setState({
-            projects: projectsList,
-        });
 
-          const projectsCoverlist = Object.keys(ProjectsObject).map((key) => {
-            // ! Creating array of promises (that incl other attr from ProjectsObject)
-            return new Promise((resolve, reject) => {
-              this.props.firebase.covers().child(ProjectsObject[key].name+'.png').getDownloadURL()
-                  .then((dl) => {
-                      resolve(dl)
-                  })
-              })
-          })
 
-          // ! When these resolve: set projects in state
-          Promise.all(projectsCoverlist).then((allprojects) => {
-              this.setState({
-                  projectcovers: allprojects,
-              });
-              setTimeout(
-                function() {
-                    this.setState({loading: false});
-                }
-                .bind(this),
-                300
-            );
-          })
-      });
+      // // ! Creating snapshot of database > object
+      // this.props.firebase.projects().on('value', snapshot => {
+      //     const ProjectsObject = snapshot.val();
+      //     // ! Object > Array (w uid's)
+      //     const projectsList = Object.keys(ProjectsObject).map((key) => {
+      //       return(
+      //       {...ProjectsObject[key],
+      //         uid: key})
+      //     });
+      //     this.setState({
+      //       projects: projectsList,
+      //   });
+
+      //     const projectsCoverlist = Object.keys(ProjectsObject).map((key) => {
+      //       // ! Creating array of promises (that incl other attr from ProjectsObject)
+      //       return new Promise((resolve, reject) => {
+      //         this.props.firebase.covers().child(ProjectsObject[key].name+'.png').getDownloadURL()
+      //             .then((dl) => {
+      //                 resolve(dl)
+      //             })
+      //         })
+      //     })
+
+      //     // ! When these resolve: set projects in state
+      //     Promise.all(projectsCoverlist).then((allprojects) => {
+      //         this.setState({
+      //             projectcovers: allprojects,
+      //         });
+      //         setTimeout(
+      //           function() {
+      //               this.setState({loading: false});
+      //           }
+      //           .bind(this),
+      //           300
+      //       );
+      //     })
+      // });
     }
 
 
@@ -101,8 +138,12 @@ class App extends Component {
   
   toDetail(projectindex){
     const project = this.state.projects[projectindex];
-    const prevPos = projectindex.prevPos;
-    console.log("HIIIEEROOOO",prevPos);
+    console.log (project);
+
+    // MAG WEG?
+    // const prevPos = projectindex.prevPos;
+    // console.log("HIIIEEROOOO",prevPos);
+
     this.setState({
       currentProject: projectindex,
       selProject: project,
@@ -141,9 +182,16 @@ class App extends Component {
             >
             <div className={directionCalc}>
               <Switch location={location}>
-                <Route exact path="/" render={(props) => <Home {...props} covers={this.state.projectcovers} loading={this.state.loading} toDetail={this.toDetail}/>} />
+                <Route exact path="/" render={() =>
+                  <Home {...this.state}
+                    // covers={this.state.projectcovers}
+                    loading={this.state.loading}
+                    toDetail={this.toDetail}/>} />
                 <Route exact path="/about" component={About} />
-                <Route exact path="/detail" render={(props) => <Detail {...props} project={selProject} toNext={this.toNext}/>} />
+                <Route exact path="/detail" render={() =>
+                    <Detail {...this.state}
+                      project={selProject}
+                      toNext={this.toNext}/>} />
               </Switch>
             </div>
           </CSSTransition>

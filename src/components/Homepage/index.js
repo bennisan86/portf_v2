@@ -20,10 +20,12 @@ class Home extends Component {
     // window.scrollTo(0, 0);
 
     render(){
-    const covers = this.props.covers;
-    const loading = this.props.loading;
+    const projects = this.props.projects;
+    console.log(projects);
     return( 
         <div className="main_container" >
+            {/* <img alt="timer" src={require('../../covers/'+name+'.png')} /> */}
+
             <div className="top_container">
                 <div className="top_logo"><Link to={ROUTES.ABOUT}><img src={logo} alt="Logo" /></Link></div>
                 <div className="top_txt">
@@ -36,7 +38,18 @@ class Home extends Component {
                     <div className="sociallink"><a href="https://twitter.com/ben_adriaenssen" target="blank"><img src={twitter} alt="Logo" /></a></div>
                 </div>
             </div>
-            {loading ? <div className="project_container_loading"><p>Loading projects...</p></div> :
+            {projects &&
+            <>
+                <div className="project_container">
+                    {projects.map((project,index) => (
+                        <div className="project_tile" key={index} onClick={() => this.props.toDetail(index)}>
+                            <img alt={project.name+"cover"} src={require('../../covers/'+project.name+'.png')} />
+                        </div>
+                    ))}
+                </div>
+                <Footer />
+            </>}
+            {/* {loading ? <div className="project_container_loading"><p>Loading projects...</p></div> :
             <>
                 <div className="project_container">
                     {covers.map((cover,index) => (
@@ -46,7 +59,7 @@ class Home extends Component {
                     ))}
                 </div>
                 <Footer />
-            </>}
+            </>} */}
         </div>
     );
     }

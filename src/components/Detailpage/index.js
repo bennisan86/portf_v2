@@ -28,87 +28,89 @@ class Detail extends Component {
                 },
                 300
             );
-            //! getting & transforming labels to string
-            const labelsObject = this.state.selProject.labels;
-            const labels = Object.keys(labelsObject).map((val) => {
-                return(labelsObject[val])});
-            const labelstring = labels.toString();
-            const newlabelstring = labelstring.replace(",", ", ");
-            //! getting & transforming links to array
-            const linksObject = this.state.selProject.links;
-            const links = Object.keys(linksObject).map((val, index) => {
-                return{
-                    val: linksObject[val],
-                    index: index
-                    }
-                    });
-            //! Setting selProject, links & labels
-            this.setState({
-                selProject: this.state.selProject,
-                labels: newlabelstring,
-                links: links,
-            });
+            // //! getting & transforming labels to string
+            // const labelsObject = this.state.selProject.labels;
+            // const labels = Object.keys(labelsObject).map((val) => {
+            //     return(labelsObject[val])});
+            // const labelstring = labels.toString();
+            // const newlabelstring = labelstring.replace(",", ", ");
+            // //! getting & transforming links to array
+            // const linksObject = this.state.selProject.links;
+            // const links = Object.keys(linksObject).map((val, index) => {
+            //     return{
+            //         val: linksObject[val],
+            //         index: index
+            //         }
+            //         });
+            // //! Setting selProject, links & labels
+            // this.setState({
+            //     selProject: this.state.selProject,
+            //     labels: newlabelstring,
+            //     links: links,
+            // });
 
             //! Render imgs 
-            this.renderImg(this.state.selProject);
+            // this.renderImg(this.state.selProject);
     }
 
-    renderImg(selProject){
-        new Promise((resolve, reject) => {
-            this.props.firebase.varref(selProject.name+'/').listAll()
-            .then((res) => {
-                const imgarray = res.items.map((item) => {
-                    // return(item.name)
-                    return new Promise((resolve, reject) => {
-                        this.props.firebase.varref(selProject.name+'/').child(item.name).getDownloadURL()
-                        .then((imgurl) => {
-                            resolve(imgurl)
-                        })
-                    })
-                }) 
-                Promise.all(imgarray).then((allimgs) => {
-                    this.setState({
-                        imgs: allimgs,
-                    });
-                    setTimeout(
-                        function() {
-                            this.setState({loadingimgs: false});
-                        }
-                        .bind(this),
-                        300
-                    );
-                    setTimeout(
-                        function() {
-                            console.log("showFooter");
-                            this.setState({showfooter: true});
-                        }
-                        .bind(this),
-                        600
-                    );
-                })
-            })
-        });
-    }
+    // renderImg(selProject){
+    //     new Promise((resolve, reject) => {
+    //         this.props.firebase.varref(selProject.name+'/').listAll()
+    //         .then((res) => {
+    //             const imgarray = res.items.map((item) => {
+    //                 // return(item.name)
+    //                 return new Promise((resolve, reject) => {
+    //                     this.props.firebase.varref(selProject.name+'/').child(item.name).getDownloadURL()
+    //                     .then((imgurl) => {
+    //                         resolve(imgurl)
+    //                     })
+    //                 })
+    //             }) 
+    //             Promise.all(imgarray).then((allimgs) => {
+    //                 this.setState({
+    //                     imgs: allimgs,
+    //                 });
+    //                 setTimeout(
+    //                     function() {
+    //                         this.setState({loadingimgs: false});
+    //                     }
+    //                     .bind(this),
+    //                     300
+    //                 );
+    //                 setTimeout(
+    //                     function() {
+    //                         console.log("showFooter");
+    //                         this.setState({showfooter: true});
+    //                     }
+    //                     .bind(this),
+    //                     600
+    //                 );
+    //             })
+    //         })
+    //     });
+    // }
 
 
-    static getDerivedStateFromProps(props, state) {
-        if (props.project !== state.selProject) {
-              return {
-            selProject: props.project,
-          };
-        }
-        // Return null to indicate no change to state.
-        return null;
-      }
+    // static getDerivedStateFromProps(props, state) {
+    //     if (props.project !== state.selProject) {
+    //           return {
+    //         selProject: props.project,
+    //       };
+    //     }
+    //     // Return null to indicate no change to state.
+    //     return null;
+    //   }
 
 
     render(){
         const project = this.state.selProject;
-        const labels = this.state.labels;
-        const links = this.state.links;
-        const imgs = this.state.imgs;
-        const loadingimgs = this.state.loadingimgs;
-        const showfooter = this.state.showfooter;
+        const labels = this.state.selProject.labels;
+        const links = this.state.selProject.links;
+
+        // const links = this.state.links;
+        // const imgs = this.state.imgs;
+        // const loadingimgs = this.state.loadingimgs;
+        // const showfooter = this.state.showfooter;
 
         return (
             <div className="detail_container">
@@ -120,15 +122,23 @@ class Detail extends Component {
             <div className="detailtop_container">
                 <div className="detailtop_txt">
                     <p className="detailtop_title">{project.title}</p>
-                    <p className="detailtop_body">{project.descr}</p>
+                    <p className="detailtop_body">{project.descr_ENG}</p>
                     <small className="detailtop_time">{project.time}</small>
-                    <small className="detailtop_labels">{labels}</small>
-                    {links.map(link => {
-                        return(<a className="detailtop_link" href={link.val} key={link.index} target="blank">{link.val}</a>)
-                    })}
+                    {/* {labels &&
+                    <>
+                        {labels.map((label,index) => (
+                        <small className="detailtop_labels">{label}</small>
+                    ))}
+                    </>}
+                    {links &&
+                    <>
+                        {links.map((link,index) => (
+                        <small className="detailtop_links">{link}</small>
+                    ))}
+                    </>} */}
                 </div>
                 </div>
-                {loadingimgs ? <div className="project_container_loading"><p>Loading images...</p></div> :
+                {/* {loadingimgs ? <div className="project_container_loading"><p>Loading images...</p></div> :
                 <>
                     <div className="detailimgs">
                         {imgs.map((img,key) => {
@@ -136,7 +146,7 @@ class Detail extends Component {
                         })}
                     </div>
                     {showfooter ? <Footer /> : null}
-                </>}
+                </>} */}
             </div>
         );
     }
